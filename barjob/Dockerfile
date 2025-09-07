@@ -1,27 +1,22 @@
-# Dockerfile
-FROM python:3.12-slim
+# Python bazinis
+FROM python:3.11-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PORT=8000
-
-WORKDIR /app
-
-# Sisteminės priklausomybės (pillow kompiliacijai ir pan.)
+# Sisteminės priklausomybės (psycopg2 ir pan.)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libjpeg62-turbo-dev zlib1g-dev \
+    build-essential libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Įdiegiame Python priklausomybes
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+WORKDIR /app
+COPY requirements.txt /app/
+RUN python -m pip install --upgrade pip && pip install -r requirements.txt
 
-# Programos kodas
-COPY . .
+COPY . /app
 
-# (Pasirinktinai) surenkam statinius, jei nori build metu
-# RUN python manage.py collectstatic --noinput
+# Statiniai failai
+RUN python manage.py collectstatic --noinput || true
 
-CMD gunicorn barjob.wsgi:application --bind 0.0.0.0:${PORT}
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8000
+
+# Pakeisk `myproject` į savo projekto pavadinimą (kur wsgi.py)
+CMD gunicorn myproject.wsgi:application --bind 0.0.0.0:$PORT

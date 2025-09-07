@@ -1,5 +1,5 @@
 [phases.setup]
-# Įdiek Python 3.11
+# Įdiek Python
 nixPkgs = ["python311", "pipx"]
 
 [phases.install]
@@ -9,5 +9,5 @@ cmds = [
 ]
 
 [start]
-# Pakeisk `myproject` į tikrą Django projekto folderį (kur yra wsgi.py)
+# Tavo projektas vadinasi 'barjob' -> WSGI = barjob.wsgi
 cmd = "gunicorn barjob.wsgi:application --bind 0.0.0.0:$PORT"

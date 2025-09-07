@@ -1,4 +1,3 @@
-# settings.py
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -10,7 +9,6 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-fallback-key")
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-# Railway domenui užteks taip, bet geriau skaityti iš env
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".railway.app,localhost,127.0.0.1").split(",")
 
 INSTALLED_APPS = [
@@ -35,9 +33,27 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'barjob.urls'
+
+# --- TEMPLATES BLOKAS PRIVALO LIKTI! ---
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
 WSGI_APPLICATION = 'barjob.wsgi.application'
 
-# --- Database (Railway Postgres, jei nustatytas DATABASE_URL); kitaip liks sqlite ---
+# --- Database ---
 DATABASES = {
     "default": dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
@@ -46,19 +62,26 @@ DATABASES = {
     )
 }
 
-# Internationalization
+# --- Password validation ---
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+# --- I18N ---
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# --- Static/Media ---
+# --- Static & Media ---
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Naudoja optimizuotą statinių servinimą
 STORAGES = {
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"}
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
 
 MEDIA_URL = "/media/"

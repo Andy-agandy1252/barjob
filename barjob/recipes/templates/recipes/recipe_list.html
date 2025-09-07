@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Russo One', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #006B61;
+            color: #EAEAEA;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(0, 107, 97, 1) 0%, rgba(0, 150, 136, 1) 100%);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 500;
+            color: #00FF95;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+            text-shadow: 0px 0px 20px rgba(0, 255, 149, 0.7), 0px 0px 40px rgba(0, 255, 149, 0.5);
+        }
+
+        .form-container, .recipe-table {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0px 0px 30px rgba(0, 255, 149, 0.7);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-container input, .form-container button, .recipe-table th, .recipe-table td {
+            color: #EAEAEA;
+            padding: 15px;
+            font-size: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 149, 0.4);
+        }
+
+        .form-container input[type="text"] {
+            width: 70%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 10px;
+            color: #EAEAEA;
+            border: 2px solid #00FF95;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 149, 0.4);
+        }
+
+        .form-container button {
+            background-color: #00FF95;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #00B2FF;
+            box-shadow: 0 0 50px rgba(0, 255, 149, 0.7);
+        }
+
+        table {
+            padding: 20px;
+            border-radius: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .recipe-table th {
+            background-color: transparent;
+            color: #00FF95;
+            border-bottom: 2px solid #00B2FF;
+        }
+
+        .recipe-table th a {
+            color: #00FF95;
+            text-decoration: none;
+        }
+
+        .recipe-table th a:hover {
+            color: #00FF95;
+        }
+
+        .recipe-table tr {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .recipe-table td button {
+            background-color: #FF6347;
+            color: #121212;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recipe-table td button:hover {
+            background-color: #FF4500;
+            box-shadow: 0 0 10px rgba(255, 99, 71, 0.5);
+        }
+
+        .navigation-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .navigation-buttons button {
+            margin-bottom: 15px;
+            width: 80%;
+            background-color: #00FF95;
+            color: #121212;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 149, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .navigation-buttons button:hover {
+            background-color: #00B2FF;
+            box-shadow: 0 0 30px rgba(0, 255, 149, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+            }
+
+            .form-container, .recipe-table {
+                width: 100%;
+                max-width: 90%;
+                padding: 20px;
+            }
+
+            .form-container input {
+                font-size: 1rem;
+                width: 90%;
+            }
+
+            .recipe-table td, .recipe-table th {
+                padding: 10px;
+            }
+
+            .navigation-buttons button {
+                padding: 15px;
+                font-size: 1.2rem;
+                width: 90%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .navigation-buttons button {
+                width: 70%;
+            }
+
+            .form-container input {
+                font-size: 1.1rem;
+            }
+
+            .menu a {
+                font-size: 1.8rem;
+            }
+        }
+
+        .table-scrollable {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Recipe List</h1>
+
+    <div class="form-container">
+        <form method="get" style="margin-bottom: 20px;">
+            <label for="search-query" style="margin-right: 10px;">Search by Name or Code:</label>
+            <input type="text" id="search-query" name="query" placeholder="Enter search query" value="{{ query }}">
+            <button type="submit">Search</button>
+            <button type="button" onclick="window.location.href='?';">Clear Field</button>
+        </form>
+    </div>
+
+    <div class="recipe-table">
+        <div class="table-scrollable">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="?sort=name&order={% if order == 'asc' %}desc{% else %}asc{% endif %}&query={{ query }}">
+                                Name {% if sort_by == 'name' %}({{ order }}){% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?sort=code&order={% if order == 'asc' %}desc{% else %}asc{% endif %}&query={{ query }}">
+                                Code {% if sort_by == 'code' %}({{ order }}){% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?sort=category&order={% if order == 'asc' %}desc{% else %}asc{% endif %}&query={{ query }}">
+                                Category {% if sort_by == 'category' %}({{ order }}){% endif %}
+                            </a>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for recipe in recipes %}
+                <tr onclick="window.location='{% url 'recipe_detail' recipe.id %}';" style="cursor: pointer;">
+                    <td>{{ recipe.name }}</td>
+                    <td>{{ recipe.code }}</td>
+                    <td>{{ recipe.category }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="display:inline;" id="delete-form-{{ recipe.id }}">
+                            {% csrf_token %}
+                            <button type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align: center;">No recipes found.
+                        <a href="{% url 'add_recipe' %}">Add a new recipe</a>.
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="navigation-buttons">
+        <button onclick="window.location.href='{% url 'menu' %}'">Back to Menu</button>
+        <button onclick="window.location.href='{% url 'add_recipe' %}'">Add a Recipe</button>
+    </div>
+
+</body>
+</html>

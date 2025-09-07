@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Inspired Interface</title>
+    <!-- Add the Google Font: "Russo One" (bold, modern style) -->
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        /* Body style */
+        body {
+            font-family: 'Russo One', sans-serif; /* Using the new font */
+            margin: 0;
+            padding: 0;
+            background-color: #006B61; /* Darker cyan/teal background */
+            color: #EAEAEA; /* Light gray text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: radial-gradient(circle, rgba(0, 107, 97, 1) 0%, rgba(0, 150, 136, 1) 100%); /* Darker cyan gradient */
+        }
+
+        /* Neon text for headings */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 500;
+            color: #00FF95; /* Light cyan text */
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: 5px;
+            text-shadow: 0px 0px 20px rgba(0, 255, 149, 0.7), 0px 0px 40px rgba(0, 255, 149, 0.5);
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        /* Flicker effect */
+        @keyframes flicker {
+            0% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Button container */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .button {
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #121212; /* Dark text */
+            padding: 20px 40px;
+            border-radius: 50px;
+            background-color: #00FF95; /* Bright cyan buttons */
+            border: 2px solid #00FF95; /* Matching border */
+            box-shadow: 0 0 20px rgba(0, 255, 149, 0.5); /* Glowing cyan border */
+            display: inline-block;
+            position: relative;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+        }
+
+        .button:hover {
+            background-color: #00B2FF; /* Lighter cyan on hover */
+            color: #121212; /* Dark text on hover */
+            box-shadow: 0 0 50px rgba(0, 255, 149, 0.7); /* Strong cyan glow */
+        }
+
+        /* Menu style */
+        .menu {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .menu h2 {
+            font-size: 2.5rem;
+            color: #FFFFFF; /* White text */
+            margin-bottom: 20px;
+        }
+
+        .menu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .menu li {
+            margin: 15px 0;
+        }
+
+        .menu a {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #121212; /* Dark text */
+            text-decoration: none;
+            background-color: #00FF95; /* Bright cyan */
+            border: 2px solid #00FF95; /* Cyan border */
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .menu a:hover {
+            background-color: #00B2FF; /* Lighter cyan on hover */
+            color: #121212; /* Dark text */
+            box-shadow: 0 0 30px rgba(0, 255, 149, 0.7); /* Glowing cyan border */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Menu section -->
+    <div class="menu">
+        <h2>BarJob Menu</h2>
+        <ul>
+            <li><a href="{% url 'add_recipe' %}" class="button">Add Recipe</a></li>
+            <li><a href="{% url 'recipe_list' %}" class="button">View Recipes</a></li>
+        </ul>
+    </div>
+
+</body>
+</html>

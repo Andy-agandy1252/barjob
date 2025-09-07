@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-scale, initial-scale=1.0">
+    <title>{{ recipe.name }} - Recipe Details</title>
+    <style>
+        body {
+            font-family: 'Russo One', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #006B61;
+            color: #EAEAEA;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Change this to allow content to expand downwards */
+            align-items: center;
+            min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+            overflow-y: auto; /* Allow vertical scrolling */
+            background: radial-gradient(circle, rgba(0, 107, 97, 1) 0%, rgba(0, 150, 136, 1) 100%);
+        }
+
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 500;
+            color: #00FF95;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+            text-shadow: 0px 0px 20px rgba(0, 255, 149, 0.7), 0px 0px 40px rgba(0, 255, 149, 0.5);
+        }
+
+        .recipe-detail-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0px 0px 30px rgba(0, 255, 149, 0.7);
+            text-align: center;
+        }
+
+        .recipe-detail-container p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons button {
+            background-color: #00FF95;
+            padding: 15px;
+            font-size: 1.2rem;
+            color: #121212;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+
+        .action-buttons button:hover {
+            background-color: #00B2FF;
+            box-shadow: 0 0 30px rgba(0, 255, 149, 0.7);
+        }
+
+        .navigation-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .navigation-buttons button {
+            margin-bottom: 15px;
+            width: 80%;
+            background-color: #00FF95;
+            color: #121212;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 149, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .navigation-buttons button:hover {
+            background-color: #00B2FF;
+            box-shadow: 0 0 30px rgba(0, 255, 149, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+            }
+
+            .recipe-detail-container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .recipe-detail-container p {
+                font-size: 1rem;
+            }
+
+            .action-buttons button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .navigation-buttons button {
+                padding: 15px;
+                font-size: 1.2rem;
+                width: 90%;
+            }
+        }
+
+        .recipe-detail-container img {
+            width: 500px;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .action-buttons .save-changes-button {
+            background-color: #00FF95;
+            padding: 15px;
+            font-size: 1.2rem;
+            color: #121212;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 130px; /* Space below the Save Changes button */
+        }
+        .recipe-detail-container input[type="file"] {
+            background-color: #00FF95;
+            width: 250px;
+            padding: 15px;
+            font-size: 1.2rem;
+            color: #121212;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px 0;
+        }
+
+        /* Hover effect for "Choose File" buttons */
+        .recipe-detail-container input[type="file"]:hover {
+            background-color: #00B2FF;
+            box-shadow: 0 0 30px rgba(0, 255, 149, 0.7);
+        }
+        .recipe-detail-container img {
+            width: 500px;
+            height: 500px;
+            object-fit: contain; /* Ensures the image fits within the container while maintaining aspect ratio */
+            border-radius: 10px;
+            margin: 10px 0;
+            background-color: #121212; /* Optional: Adds a background color for better visualization */
+        }
+    </style>
+</head>
+<body>
+    <div class="recipe-detail-container">
+        <h1>{{ recipe.name }}</h1>
+        <p>{{ recipe.code }}</p>
+        <div class="action-buttons">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Recipe Name -->
+                {% if form.name.errors %}
+                    <div class="error-message">
+                        <ul>
+                            {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <label for="name">Recipe Name:</label>
+                <input type="text" name="name" value="{{ recipe.name }}" required><br><br>
+
+                <!-- Recipe Code -->
+                {% if form.code.errors %}
+                    <div class="error-message">
+                        <ul>
+                            {% for error in form.code.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <label for="code">Code:</label>
+                <input type="text" name="code" value="{{ recipe.code }}" required><br><br>
+
+                <!-- Category -->
+                <label for="category">Category:</label>
+                <input type="text" name="category" value="{{ recipe.category }}" required><br><br>
+
+                <!-- Image 1 -->
+                {% if recipe.image1 %}
+                    <img src="{{ recipe.image1.url }}" alt="Image 1">
+                    <button type="submit" name="delete_image1">Delete Image 1</button><br><br>
+                {% endif %}
+                <label for="image1">Change Image 1:</label><br>
+                <input type="file" name="image1"><br><br>
+
+                <!-- Image 2 -->
+                {% if recipe.image2 %}
+                    <img src="{{ recipe.image2.url }}" alt="Image 2">
+                    <button type="submit" name="delete_image2">Delete Image 2</button><br><br>
+                {% endif %}
+                <label for="image2">Change Image 2:</label><br>
+                <input type="file" name="image2"><br><br>
+
+                <!-- Image 3 -->
+                {% if recipe.image3 %}
+                    <img src="{{ recipe.image3.url }}" alt="Image 3">
+                    <button type="submit" name="delete_image3">Delete Image 3</button><br><br>
+                {% endif %}
+                <label for="image3">Change Image 3:</label><br>
+                <input type="file" name="image3"><br><br>
+
+                <!-- Image 4 -->
+                {% if recipe.image4 %}
+                    <img src="{{ recipe.image4.url }}" alt="Image 4">
+                    <button type="submit" name="delete_image4">Delete Image 4</button><br><br>
+                {% endif %}
+                <label for="image4">Change Image 4:</label><br>
+                <input type="file" name="image4"><br><br>
+
+                <!-- Image 5 -->
+                {% if recipe.image5 %}
+                    <img src="{{ recipe.image5.url }}" alt="Image 5">
+                    <button type="submit" name="delete_image5">Delete Image 5</button><br><br>
+                {% endif %}
+                <label for="image5">Change Image 5:</label><br>
+                <input type="file" name="image5"><br><br>
+
+                <!-- Image 6 -->
+                {% if recipe.image6 %}
+                    <img src="{{ recipe.image6.url }}" alt="Image 6">
+                    <button type="submit" name="delete_image6">Delete Image 6</button><br><br>
+                {% endif %}
+                <label for="image6">Change Image 6:</label><br>
+                <input type="file" name="image6"><br><br>
+
+                <!-- Image 7 -->
+                {% if recipe.image7 %}
+                    <img src="{{ recipe.image7.url }}" alt="Image 7">
+                    <button type="submit" name="delete_image7">Delete Image 7</button><br><br>
+                {% endif %}
+                <label for="image7">Change Image 7:</label><br>
+                <input type="file" name="image7"><br><br>
+
+                <!-- Image 8 -->
+                {% if recipe.image5 %}
+                    <img src="{{ recipe.image8.url }}" alt="Image 8">
+                    <button type="submit" name="delete_image8">Delete Image 8</button><br><br>
+                {% endif %}
+                <label for="image8">Change Image 8:</label><br>
+                <input type="file" name="image8"><br><br>
+
+                <!-- Image 9 -->
+                {% if recipe.image9 %}
+                    <img src="{{ recipe.image9.url }}" alt="Image 9">
+                    <button type="submit" name="delete_image9">Delete Image 9</button><br><br>
+                {% endif %}
+                <label for="image9">Change Image 9:</label><br>
+                <input type="file" name="image9"><br><br>
+
+                <!-- Image 10 -->
+                {% if recipe.image10 %}
+                    <img src="{{ recipe.image10.url }}" alt="Image 10">
+                    <button type="submit" name="delete_image10">Delete Image 10</button><br><br>
+                {% endif %}
+                <label for="image10">Change Image 10:</label><br>
+                <input type="file" name="image10"><br><br>
+
+                <!-- Save Changes Button -->
+                <button type="submit" class="action-buttons save-changes-button">Save Changes</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation-buttons">
+        <button onclick="window.location.href='{% url 'menu' %}'">Back to Menu</button>
+        <button onclick="window.location.href='{% url 'recipe_list' %}'">Back to Recipe List</button>
+        <button onclick="window.location.href='{% url 'add_recipe' %}'">Add a Recipe</button>
+    </div>
+<script>
+    // Store the current scroll position when the page is loaded or on image delete
+    window.addEventListener("load", function() {
+        const scrollPosition = localStorage.getItem("scrollPosition");
+        if (scrollPosition) {
+            window.scrollTo(0, scrollPosition);
+        }
+    });
+
+    window.addEventListener("beforeunload", function() {
+        localStorage.setItem("scrollPosition", window.scrollY);
+    });
+</script>
+
+</body>
+
+</html>
+
